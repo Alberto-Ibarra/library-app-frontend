@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from '@mui/material/Button';
 
 
 function App() {
@@ -7,6 +8,9 @@ function App() {
   return (
     <>
       <h1>Library app frontend</h1>
+      <Button variant="contained" color="primary">
+        Click Me
+      </Button>
     </>
   )
 }
