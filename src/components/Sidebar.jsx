@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,27 +10,25 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 const drawerWidth = 240;
 
 export default function Sidebar() {
+  const menuItems = [
+    { text: 'Book Copies', path: '/book-copies' },
+    { text: 'Books', path: '/books' },
+    { text: 'Patrons', path: '/patrons' },
+    { text: 'Users', path: '/users' },
+  ];
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        {/* <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Permanent drawer
-          </Typography>
-        </Toolbar> */}
-      </AppBar>
+      />
       <Drawer
         sx={{
           width: drawerWidth,
@@ -45,13 +44,10 @@ export default function Sidebar() {
         <Toolbar />
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+          {menuItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton component={Link} to={item.path}>
+                <ListItemText primary={item.text} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -62,9 +58,7 @@ export default function Sidebar() {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
-        <Typography>
-          Main content goes here.
-        </Typography>
+        {/* <Typography>Main content goes here.</Typography> */}
       </Box>
     </Box>
   );
