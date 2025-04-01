@@ -1,27 +1,39 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme';
+import Layout from './components/Layout';
 import BookCopies from './pages/BookCopies';
 import Books from './pages/Books';
 import Patrons from './pages/Patrons';
 import Users from './pages/Users';
-import Box from '@mui/material/Box';
+import Login from './pages/auth/Login';
+// import RegisterUser from './pages/RegisterUser';
 
 function App() {
   return (
-    <Router>
-      <Box sx={{ display: 'flex' }}>
-        <Sidebar />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Routes>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/register" element={<RegisterUser />} /> */}
+
+          {/* Protected Routes (Inside Layout) */}
+          <Route path="/" element={<Layout />}>
             <Route path="/book-copies" element={<BookCopies />} />
             <Route path="/books" element={<Books />} />
             <Route path="/patrons" element={<Patrons />} />
             <Route path="/users" element={<Users />} />
-          </Routes>
-        </Box>
-      </Box>
-    </Router>
+          </Route>
+
+          {/* Catch-all Route */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

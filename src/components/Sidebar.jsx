@@ -7,14 +7,14 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import theme from '../theme';
 
 const drawerWidth = 180;
 
-export default function Sidebar() {
+export default function Sidebar({ children }) { // Accept children to render pages properly
   const menuItems = [
     { text: 'Book Copies', path: '/book-copies' },
     { text: 'Books', path: '/books' },
@@ -25,10 +25,6 @@ export default function Sidebar() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      />
       <Drawer
         sx={{
           width: drawerWidth,
@@ -36,29 +32,36 @@ export default function Sidebar() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.text.secondary,
           },
         }}
         variant="permanent"
         anchor="left"
       >
         <Toolbar />
-        {/* <Divider /> */}
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
               <ListItemButton component={Link} to={item.path}>
-                <ListItemText primary={item.text} sx={{ textAlign: 'center' }}/>
+                <ListItemText primary={item.text} sx={{ textAlign: 'center' }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
+
+      {/* Main Content Area Fix */}
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+        sx={{
+          flexGrow: 1,
+          width: `calc(100% - ${drawerWidth}px)`,
+          p: 3,
+        }}
       >
         <Toolbar />
-        {/* <Typography>Main content goes here.</Typography> */}
+        {children}
       </Box>
     </Box>
   );

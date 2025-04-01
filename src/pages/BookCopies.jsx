@@ -29,20 +29,20 @@ const BookCopies = () => {
             <Typography variant="h4" gutterBottom>
                 Book Copies Page
             </Typography>
-            <TableContainer component={Paper} sx={{ width: '90%', mx: 'auto', p: 2 }}>
+            <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2}}>
                 <Table>
                     <TableHead>
-                        <TableRow>
-                            <TableCell><strong>Title</strong></TableCell>
-                            <TableCell><strong>Available</strong></TableCell>
-                            <TableCell><strong>Location</strong></TableCell>
-                            <TableCell><strong>Condition</strong></TableCell>
-                            <TableCell><strong>Year Published</strong></TableCell>
+                        <TableRow sx={{ backgroundColor: '#3E6B48', color: '#F5F5F5' }}>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Title</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Available</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Location</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Condition</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Year Published</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {books.map((book) => (
-                            <TableRow key={book.id}>
+                        {books.map((book, index) => (
+                            <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
                                 <TableCell>{book.title}</TableCell>
                                 <TableCell>{book.isavailable ? 'Yes' : 'No'}</TableCell>
                                 <TableCell>{book.location}</TableCell>
