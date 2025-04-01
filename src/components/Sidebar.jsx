@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 export default function Sidebar() {
   const menuItems = [
@@ -42,12 +42,12 @@ export default function Sidebar() {
         anchor="left"
       >
         <Toolbar />
-        <Divider />
+        {/* <Divider /> */}
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
               <ListItemButton component={Link} to={item.path}>
-                <ListItemText primary={item.text} />
+                <ListItemText primary={item.text} sx={{ textAlign: 'center' }}/>
               </ListItemButton>
             </ListItem>
           ))}
