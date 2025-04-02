@@ -8,7 +8,7 @@ import Books from './pages/Books';
 import Patrons from './pages/Patrons';
 import Users from './pages/Users';
 import Login from './pages/auth/Login';
-// import RegisterUser from './pages/RegisterUser';
+import RegisterUser from './pages/auth/RegisterUser';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/register" element={<RegisterUser />} /> */}
 
           {/* Protected Routes (Inside Layout) */}
           <Route element={<ProtectedRoute />}>
@@ -28,7 +27,14 @@ function App() {
               <Route path="/book-copies" element={<BookCopies />} />
               <Route path="/books" element={<Books />} />
               <Route path="/patrons" element={<Patrons />} />
+            </Route>
+          </Route>
+
+          {/* Admin Protected Route */}
+          <Route element={<ProtectedRoute allowedRoles={['Admin']} />}>
+            <Route path="/" element={<Layout/>}>
               <Route path="/users" element={<Users />} />
+              <Route path="/register" element={<RegisterUser />} />
             </Route>
           </Route>
 

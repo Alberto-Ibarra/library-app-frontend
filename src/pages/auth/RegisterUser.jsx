@@ -23,7 +23,7 @@ const RegisterUser = () => {
         setSuccess('');
 
         try {
-            const response = await axios.post('https://your-api-url.com/api/register', formData);
+            const response = await axios.post('https://library-app-production-8775.up.railway.app/api/auth/register', formData);
             setSuccess('User registered successfully');
             setFormData({ firstname: '', lastname: '', email: '', password: '', role: 'user' });
         } catch (err) {
@@ -91,8 +91,8 @@ const RegisterUser = () => {
                         value={formData.role}
                         onChange={handleChange}
                     >
-                        <MenuItem value="user">User</MenuItem>
-                        <MenuItem value="admin">Admin</MenuItem>
+                        <MenuItem value="User">User</MenuItem>
+                        <MenuItem value="Admin">Admin</MenuItem>
                     </TextField>
                     {error && <Typography color="error" variant="body2">{error}</Typography>}
                     {success && <Typography color="success.main" variant="body2">{success}</Typography>}

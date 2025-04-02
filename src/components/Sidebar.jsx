@@ -32,14 +32,21 @@ export default function Sidebar({ children }) {
     { text: 'Book Copies', path: '/book-copies' },
     { text: 'Books', path: '/books' },
     { text: 'Patrons', path: '/patrons' },
-    { text: 'Users', path: '/users' },
   ];
+
+  if (user?.role === 'Admin') {
+    menuItems.push({ text: 'Users', path: '/users' });
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
     navigate("/login");
   };
+
+  const navigateToRegister = () => { 
+    navigate("/register");
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -75,11 +82,34 @@ export default function Sidebar({ children }) {
         </List>
 
         {/* Logout Button */}
-        <Box sx={{ position: 'absolute', bottom: 20, width: '100%', textAlign: 'center' }}>
-          <Button variant="contained" color="secondary" onClick={handleLogout}>
+        <Box sx={{ 
+          position: 'absolute', 
+          bottom: 20, 
+          width: '100%', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: 1
+        }}>
+          {user?.role === "Admin" && (
+            <Button
+              variant="contained"
+              onClick={navigateToRegister}
+              sx={{ mx: 0.5, width: 120, backgroundColor: 'success.light', color: '#fff' }}
+            >
+              Register
+            </Button>
+          )}
+
+          <Button 
+            variant="contained" 
+            color="error"
+            onClick={handleLogout} 
+            sx={{ mx:0.5, width: 120 }}
+          >
             Logout
           </Button>
         </Box>
+
       </Drawer>
 
       <Box
