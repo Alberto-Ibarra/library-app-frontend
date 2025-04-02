@@ -9,6 +9,7 @@ import Patrons from './pages/Patrons';
 import Users from './pages/Users';
 import Login from './pages/auth/Login';
 // import RegisterUser from './pages/RegisterUser';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -22,11 +23,13 @@ function App() {
           {/* <Route path="/register" element={<RegisterUser />} /> */}
 
           {/* Protected Routes (Inside Layout) */}
-          <Route path="/" element={<Layout />}>
-            <Route path="/book-copies" element={<BookCopies />} />
-            <Route path="/books" element={<Books />} />
-            <Route path="/patrons" element={<Patrons />} />
-            <Route path="/users" element={<Users />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Layout />}>
+              <Route path="/book-copies" element={<BookCopies />} />
+              <Route path="/books" element={<Books />} />
+              <Route path="/patrons" element={<Patrons />} />
+              <Route path="/users" element={<Users />} />
+            </Route>
           </Route>
 
           {/* Catch-all Route */}

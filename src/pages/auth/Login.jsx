@@ -21,7 +21,9 @@ const Login = () => {
 
             // Store token in localStorage
             localStorage.setItem('authToken', response.data.token);
-
+            console.log(response.data.user);
+            
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             // Redirect to dashboard
             navigate('/book-copies');
         } catch (error) {
