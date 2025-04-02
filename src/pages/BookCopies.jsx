@@ -14,7 +14,15 @@ const BookCopies = () => {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
-        axios.get('https://library-app-production-8775.up.railway.app/api/bookcopies/copies')
+        console.log('useEffect triggered');
+        const token = localStorage.getItem('authToken');
+        console.log(token);
+        
+        axios.get('https://library-app-production-8775.up.railway.app/api/bookcopies/copies' , {
+            headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+        })
             .then(response => {
                 console.log(response);
                 setBooks(response.data);
