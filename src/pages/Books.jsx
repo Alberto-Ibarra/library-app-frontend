@@ -9,14 +9,15 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 
 const Books = () => {
     const [books, setBooks] = useState([]);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
     useEffect(() => {
-        console.log('useEffect triggered');
         const token = localStorage.getItem('authToken');
-        console.log(token);
         
         axios.get('https://library-app-production-8775.up.railway.app/api/books/books' , {
             headers: {
@@ -32,6 +33,25 @@ const Books = () => {
             });
     }, []);
 
+    const handleDeleteClick = (book) => {
+        setSelectedBook(book);
+        setConfirmDeleteOpen(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            await axios.delete(`https://library-app-production-8775.up.railway.app/api/books/book/${selectedBook.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setBooks((prevBooks) => prevBooks.filter(book => book.id !== selectedBook.id));
+            setConfirmDeleteOpen(false);
+            setSelectedBook(null);
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
     return (
         <Box sx={{ p: 2 }}>
             <Typography variant="h4" gutterBottom>
@@ -41,8 +61,9 @@ const Books = () => {
                 <Table>
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#3E6B48', color: '#F5F5F5' }}>
-                        <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Title</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Action</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -50,11 +71,40 @@ const Books = () => {
                             <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
                                 <TableCell>{book.id}</TableCell>
                                 <TableCell>{book.title}</TableCell>
+                                <TableCell>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <Button variant="contained" color="error" size="small" onClick={() => handleDeleteClick(book)}>
+                                            Delete
+                                        </Button>
+                                    </Box>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog
+                open={confirmDeleteOpen}
+                onClose={() => setConfirmDeleteOpen(false)}
+            >
+                <DialogTitle>Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this book?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setConfirmDeleteOpen(false)} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </Box>
     );
 };
