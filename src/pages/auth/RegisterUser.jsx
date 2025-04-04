@@ -8,7 +8,7 @@ const RegisterUser = () => {
         lastname: '',
         email: '',
         password: '',
-        role: 'user' // Default role is 'user'
+        role: 'user'
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -90,6 +90,7 @@ const RegisterUser = () => {
                         margin="normal"
                         value={formData.role}
                         onChange={handleChange}
+                        required
                     >
                         <MenuItem value="User">User</MenuItem>
                         <MenuItem value="Admin">Admin</MenuItem>

@@ -109,20 +109,7 @@ export default function Sidebar({ children }) {
             Logout
           </Button>
         </Box>
-
       </Drawer>
-
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          width: `calc(100% - ${drawerWidth}px)`,
-          p: 3,
-        }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
     </Box>
   );
 }
