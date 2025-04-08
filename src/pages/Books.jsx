@@ -9,23 +9,24 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@mui/material';
 
 const Books = () => {
     const [books, setBooks] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+    const [openAddBook, setOpenAddBook] = useState(false);
+    const [newBook, setNewBook] = useState({ title: '', authorNames: '' }); // Added authorNames
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         
-        axios.get('https://library-app-production-8775.up.railway.app/api/books/books' , {
+        axios.get('https://library-app-production-8775.up.railway.app/api/books/books', {
             headers: {
-            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        },
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
         })
             .then(response => {
-                console.log(response);
                 setBooks(response.data);
             })
             .catch(error => {
@@ -48,22 +49,44 @@ const Books = () => {
             setConfirmDeleteOpen(false);
             setSelectedBook(null);
         } catch (error) {
-            console.error('Error deleting user:', error);
+            console.error('Error deleting book:', error);
+        }
+    };
+
+    const handleAddBook = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            // Split the author names by commas and trim any excess spaces
+            const authorNames = newBook.authorNames.split(',').map(author => author.trim());
+
+            const response = await axios.post(
+                'https://library-app-production-8775.up.railway.app/api/books/book',
+                { title: newBook.title, authorNames },  // Include authors
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setBooks((prevBooks) => [...prevBooks, response.data]);
+            setOpenAddBook(false);
+            setNewBook({ title: '', authorNames: '' });  // Reset form
+        } catch (error) {
+            console.error('Error adding book:', error);
         }
     };
 
     return (
         <Box sx={{ p: 2 }}>
-            <Typography variant="h4" gutterBottom>
-                Books
-            </Typography>
-            <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2}}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="h4" gutterBottom>Books</Typography>
+                <Button variant="contained" color="primary" onClick={() => setOpenAddBook(true)}>
+                    Add Book
+                </Button>
+            </Box>
+
+            <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2 }}>
                 <Table>
                     <TableHead>
                         <TableRow sx={{ backgroundColor: '#3E6B48', color: '#F5F5F5' }}>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Title</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Action</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -71,13 +94,6 @@ const Books = () => {
                             <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
                                 <TableCell>{book.id}</TableCell>
                                 <TableCell>{book.title}</TableCell>
-                                <TableCell>
-                                    <Box sx={{ display: 'flex', gap: 1 }}>
-                                        <Button variant="contained" color="error" size="small" onClick={() => handleDeleteClick(book)}>
-                                            Delete
-                                        </Button>
-                                    </Box>
-                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -85,10 +101,7 @@ const Books = () => {
             </TableContainer>
 
             {/* Delete Confirmation Dialog */}
-            <Dialog
-                open={confirmDeleteOpen}
-                onClose={() => setConfirmDeleteOpen(false)}
-            >
+            <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -105,6 +118,34 @@ const Books = () => {
                 </DialogActions>
             </Dialog>
 
+            {/* Add Book Dialog */}
+            <Dialog open={openAddBook} onClose={() => setOpenAddBook(false)}>
+                <DialogTitle>Add New Book</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Book Title"
+                        fullWidth
+                        value={newBook.title}
+                        onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+                        sx={{ mb: 2 }}
+                    />
+                    <TextField
+                        label="Author(s) (comma-separated)"
+                        fullWidth
+                        value={newBook.authorNames}
+                        onChange={(e) => setNewBook({ ...newBook, authorNames: e.target.value })}
+                        sx={{ mb: 2 }}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenAddBook(false)} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleAddBook} color="primary" variant="contained">
+                        Add
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
