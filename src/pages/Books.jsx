@@ -9,29 +9,35 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField } from '@mui/material';
+import {
+    Dialog, DialogTitle, DialogContent, DialogContentText,
+    DialogActions, Button, TextField, Select, MenuItem, InputLabel, FormControl
+} from '@mui/material';
 
 const Books = () => {
     const [books, setBooks] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [selectedBook, setSelectedBook] = useState(null);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [openAddBook, setOpenAddBook] = useState(false);
-    const [newBook, setNewBook] = useState({ title: '', authorNames: '' }); // Added authorNames
+    const [newBook, setNewBook] = useState({ title: '', authorNames: '', categoryId: '' });
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
-        
+
+        // Fetch books
         axios.get('https://library-app-production-8775.up.railway.app/api/books/books', {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
         })
-            .then(response => {
-                setBooks(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching books', error);
-            });
+            .then(response => setBooks(response.data))
+            .catch(error => console.error('Error fetching books', error));
+
+        // Fetch categories
+        axios.get('https://library-app-production-8775.up.railway.app/api/books/categories', {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then(response => setCategories(response.data))
+            .catch(error => console.error('Error fetching categories', error));
     }, []);
 
     const handleDeleteClick = (book) => {
@@ -56,19 +62,29 @@ const Books = () => {
     const handleAddBook = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            // Split the author names by commas and trim any excess spaces
-            const authorNames = newBook.authorNames.split(',').map(author => author.trim());
+
+            const authorNames = newBook.authorNames
+                ? newBook.authorNames.split(',').map(author => author.trim())
+                : [];
 
             const response = await axios.post(
-                'https://library-app-production-8775.up.railway.app/api/books/book',
-                { title: newBook.title, authorNames },  // Include authors
+                'https://library-app-production-8775.up.railway.app/api/books/addbook',
+                {
+                    title: newBook.title,
+                    authorNames,
+                    categoryId: newBook.categoryId || null
+                },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+
             setBooks((prevBooks) => [...prevBooks, response.data]);
             setOpenAddBook(false);
-            setNewBook({ title: '', authorNames: '' });  // Reset form
+            setNewBook({ title: '', authorNames: '', categoryId: '' });
         } catch (error) {
             console.error('Error adding book:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+            }
         }
     };
 
@@ -136,6 +152,21 @@ const Books = () => {
                         onChange={(e) => setNewBook({ ...newBook, authorNames: e.target.value })}
                         sx={{ mb: 2 }}
                     />
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                        <InputLabel id="category-label">Category</InputLabel>
+                        <Select
+                            labelId="category-label"
+                            value={newBook.categoryId}
+                            label="Category"
+                            onChange={(e) => setNewBook({ ...newBook, categoryId: e.target.value })}
+                        >
+                            {categories.map((cat) => (
+                                <MenuItem key={cat.id} value={cat.id}>
+                                    {cat.title}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddBook(false)} color="primary">
