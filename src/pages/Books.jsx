@@ -13,6 +13,8 @@ import {
     Dialog, DialogTitle, DialogContent, DialogContentText,
     DialogActions, Button, TextField, Select, MenuItem, InputLabel, FormControl
 } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Books = () => {
     const [books, setBooks] = useState([]);
@@ -21,6 +23,9 @@ const Books = () => {
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [openAddBook, setOpenAddBook] = useState(false);
     const [newBook, setNewBook] = useState({ title: '', authorNames: '', categoryId: '' });
+    const [authorOptions, setAuthorOptions] = useState([]);
+    const [authorInput, setAuthorInput] = useState('');
+    const [loadingAuthors, setLoadingAuthors] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -39,6 +44,33 @@ const Books = () => {
             .then(response => setCategories(response.data))
             .catch(error => console.error('Error fetching categories', error));
     }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+
+        if (!authorInput.trim()) return;
+
+        const fetchAuthors = async () => {
+            try {
+                console.log(authorInput);
+                
+                setLoadingAuthors(true);
+                const response = await axios.get(
+                    `https://library-app-production-8775.up.railway.app/api/books/authors/search?q=${authorInput}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                setAuthorOptions(response.data || []);
+            } catch (error) {
+                console.error('Error fetching authors:', error);
+            } finally {
+                setLoadingAuthors(false);
+            }
+        };
+
+        const delayDebounce = setTimeout(fetchAuthors, 300);
+
+        return () => clearTimeout(delayDebounce);
+    }, [authorInput]);
 
     const handleDeleteClick = (book) => {
         setSelectedBook(book);
@@ -116,7 +148,6 @@ const Books = () => {
                 </Table>
             </TableContainer>
 
-            {/* Delete Confirmation Dialog */}
             <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>
@@ -134,7 +165,6 @@ const Books = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Add Book Dialog */}
             <Dialog open={openAddBook} onClose={() => setOpenAddBook(false)}>
                 <DialogTitle>Add New Book</DialogTitle>
                 <DialogContent>
@@ -144,14 +174,30 @@ const Books = () => {
                         value={newBook.title}
                         onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
                         sx={{ mb: 2 }}
+                        required
                     />
-                    <TextField
-                        label="Author(s) (comma-separated)"
-                        fullWidth
-                        value={newBook.authorNames}
-                        onChange={(e) => setNewBook({ ...newBook, authorNames: e.target.value })}
-                        sx={{ mb: 2 }}
+                    <Autocomplete
+                        options={authorOptions}
+                        getOptionLabel={(option) => option.name} // <-- this fixes it
+                        loading={loadingAuthors}
+                        onInputChange={(event, newInputValue) => setAuthorInput(newInputValue)}
+                        onChange={(event, newValue) => {
+                            setNewBook((prev) => ({
+                            ...prev,
+                            authorNames: newValue ? newValue.name : ''
+                            }));
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                            {...params}
+                            label="Author"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                            />
+                        )}
                     />
+
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <InputLabel id="category-label">Category</InputLabel>
                         <Select
@@ -159,6 +205,7 @@ const Books = () => {
                             value={newBook.categoryId}
                             label="Category"
                             onChange={(e) => setNewBook({ ...newBook, categoryId: e.target.value })}
+                            required
                         >
                             {categories.map((cat) => (
                                 <MenuItem key={cat.id} value={cat.id}>
