@@ -14,7 +14,6 @@ import {
     DialogActions, Button, TextField, Select, MenuItem, InputLabel, FormControl
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const Books = () => {
     const [books, setBooks] = useState([]);
@@ -44,6 +43,8 @@ const Books = () => {
             .then(response => setCategories(response.data))
             .catch(error => console.error('Error fetching categories', error));
     }, []);
+    console.log(books);
+    
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -99,6 +100,10 @@ const Books = () => {
                 ? newBook.authorNames.split(',').map(author => author.trim())
                 : [];
 
+            if (!newBook.title || !newBook.authorNames || !newBook.categoryId) {
+                return alert('Please fill in all required fields.');
+            }
+
             const response = await axios.post(
                 'https://library-app-production-8775.up.railway.app/api/books/addbook',
                 {
@@ -135,6 +140,7 @@ const Books = () => {
                         <TableRow sx={{ backgroundColor: '#3E6B48', color: '#F5F5F5' }}>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Title</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Author</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -142,6 +148,7 @@ const Books = () => {
                             <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
                                 <TableCell>{book.id}</TableCell>
                                 <TableCell>{book.title}</TableCell>
+                                <TableCell>{book.name}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -178,7 +185,7 @@ const Books = () => {
                     />
                     <Autocomplete
                         options={authorOptions}
-                        getOptionLabel={(option) => option.name} // <-- this fixes it
+                        getOptionLabel={(option) => option.name}
                         loading={loadingAuthors}
                         onInputChange={(event, newInputValue) => setAuthorInput(newInputValue)}
                         onChange={(event, newValue) => {
@@ -194,6 +201,7 @@ const Books = () => {
                             variant="outlined"
                             fullWidth
                             sx={{ mb: 2 }}
+                            required
                             />
                         )}
                     />
