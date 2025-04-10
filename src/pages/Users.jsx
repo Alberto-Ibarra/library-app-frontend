@@ -17,7 +17,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import EditModal from '../components/EditModal';
+import EditUserModal from '../components/modals/EditUserModal';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -125,7 +125,7 @@ const Users = () => {
 
             {/* Edit Modal */}
             {selectedUser && (
-                <EditModal open={open} handleClose={() => setOpen(false)} userData={selectedUser} handleSave={handleSave} />
+                <EditUserModal open={open} handleClose={() => setOpen(false)} userData={selectedUser} handleSave={handleSave} />
             )}
 
             {/* Delete Confirmation Dialog */}

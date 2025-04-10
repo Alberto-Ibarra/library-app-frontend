@@ -52,9 +52,7 @@ const Books = () => {
         if (!authorInput.trim()) return;
 
         const fetchAuthors = async () => {
-            try {
-                console.log(authorInput);
-                
+            try { 
                 setLoadingAuthors(true);
                 const response = await axios.get(
                     `https://library-app-production-8775.up.railway.app/api/books/authors/search?q=${authorInput}`,
@@ -141,14 +139,16 @@ const Books = () => {
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Title</strong></TableCell>
                             <TableCell sx={{ color: '#F5F5F5' }}><strong>Author</strong></TableCell>
+                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Category</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {books.map((book, index) => (
                             <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
-                                <TableCell>{book.id}</TableCell>
+                                <TableCell>{book.bookid}</TableCell>
                                 <TableCell>{book.title}</TableCell>
-                                <TableCell>{book.name}</TableCell>
+                                <TableCell>{book.authorname}</TableCell>
+                                <TableCell>{book.category}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -172,7 +172,7 @@ const Books = () => {
                 </DialogActions>
             </Dialog>
 
-            <Dialog open={openAddBook} onClose={() => setOpenAddBook(false)}>
+            <Dialog open={openAddBook} onClose={() => setOpenAddBook(false)} fullWidth maxWidth="sm">
                 <DialogTitle>Add New Book</DialogTitle>
                 <DialogContent>
                     <TextField

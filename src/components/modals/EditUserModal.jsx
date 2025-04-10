@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, MenuItem } from '@mui/material';
 
-const EditModal = ({ open, handleClose, userData, handleSave }) => {
+const EditUserModal = ({ open, handleClose, userData, handleSave }) => {
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -71,4 +71,4 @@ const EditModal = ({ open, handleClose, userData, handleSave }) => {
     );
 };
 
-export default EditModal;
+export default EditUserModal;
