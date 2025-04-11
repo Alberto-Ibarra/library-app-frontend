@@ -33,8 +33,6 @@ const Books = () => {
             .then(response => setCategories(response.data))
             .catch(error => console.error('Error fetching categories', error));
     }, []);
-    console.log(books);
-    
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');

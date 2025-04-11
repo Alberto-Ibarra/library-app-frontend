@@ -78,8 +78,6 @@ const BookCopies = () => {
         }
     
         try {
-            console.log(newBookData);
-            
             const token = localStorage.getItem('authToken');
             await axios.post(
                 'https://library-app-production-8775.up.railway.app/api/bookcopies/copies',
@@ -130,6 +128,7 @@ const BookCopies = () => {
                 <Button variant="contained" onClick={() => setAddDialogOpen(true)}>Add New Copy</Button>
             </Box>
 
+            {/* Book Table */}
             <BookCopiesTable
                 books={books}
                 onEdit={handleEditClick}
@@ -137,7 +136,7 @@ const BookCopies = () => {
                 onCheckout={handleCheckout}
             />
 
-            {/* Edit modal*/}
+            {/* Edit Modal */}
             {selectedBook && (
                 <EditBookCopyModal
                     open={open}

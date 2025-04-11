@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {
-    Typography,
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from '@mui/material';
+import {Typography, Box} from '@mui/material';
 import EditUserModal from '../components/users/EditUserModal';
 import UserTable from '../components/users/UserTable';
 import ConfirmDeleteDialog from '../components/users/ConfirmDeleteDialog';
