@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
     Typography,
-    Paper,
     Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     Button,
     Dialog,
     DialogActions,
@@ -17,7 +10,9 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import EditUserModal from '../components/modals/EditUserModal';
+import EditUserModal from '../components/users/EditUserModal';
+import UserTable from '../components/users/UserTable';
+import ConfirmDeleteDialog from '../components/users/ConfirmDeleteDialog';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -87,41 +82,12 @@ const Users = () => {
     return (
         <Box sx={{ p: 2 }}>
             <Typography variant="h4" gutterBottom>Users</Typography>
-            <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow sx={{ backgroundColor: '#3E6B48', color: '#F5F5F5' }}>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Id</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Role</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>First Name</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Last Name</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Email</strong></TableCell>
-                            <TableCell sx={{ color: '#F5F5F5' }}><strong>Actions</strong></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((user, index) => (
-                            <TableRow key={user.id || index} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
-                                <TableCell>{user.id}</TableCell>
-                                <TableCell>{user.role}</TableCell>
-                                <TableCell>{user.firstname}</TableCell>
-                                <TableCell>{user.lastname}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>
-                                    <Box sx={{ display: 'flex', gap: 1 }}>
-                                        <Button variant="contained" color="primary" size="small" onClick={() => handleEditClick(user)}>
-                                            Edit
-                                        </Button>
-                                        <Button variant="contained" color="error" size="small" onClick={() => handleDeleteClick(user)}>
-                                            Delete
-                                        </Button>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            
+            <UserTable
+                users={users}
+                handleEditClick={handleEditClick}
+                handleDeleteClick={handleDeleteClick}
+            />
 
             {/* Edit Modal */}
             {selectedUser && (
@@ -129,25 +95,11 @@ const Users = () => {
             )}
 
             {/* Delete Confirmation Dialog */}
-            <Dialog
-                open={confirmDeleteOpen}
-                onClose={() => setConfirmDeleteOpen(false)}
-            >
-                <DialogTitle>Confirm Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this user?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setConfirmDeleteOpen(false)} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDeleteConfirm} color="error" variant="contained">
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ConfirmDeleteDialog
+                confirmDeleteOpen={confirmDeleteOpen}
+                setConfirmDeleteOpen={setConfirmDeleteOpen}
+                handleDeleteConfirm={handleDeleteConfirm}
+            />
         </Box>
     );
 };
