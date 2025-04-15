@@ -4,7 +4,7 @@ import {
     TableHead, TableRow, Paper, Button, Box
 } from '@mui/material';
 
-const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout }) => {
+const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout, onReturn }) => {
     return (
         <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2 }}>
             <Table>
@@ -28,9 +28,25 @@ const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout }) => {
                             <TableCell>{book.bookcondition}</TableCell>
                             <TableCell>
                                 <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Button variant="contained" color="secondary" size="small" onClick={() => onCheckout(book)}>
-                                        CheckOut
-                                    </Button>
+                                    {book.isavailable ? (
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            size="small"
+                                            onClick={() => onCheckout(book)}
+                                        >
+                                            CheckOut
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            size="small"
+                                            onClick={() => onReturn(book)}
+                                        >
+                                            Return
+                                        </Button>
+                                    )}
                                     <Button variant="contained" color="primary" size="small" onClick={() => onEdit(book)}>
                                         Edit
                                     </Button>

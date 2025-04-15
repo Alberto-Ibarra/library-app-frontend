@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {
-    Typography, Box, Button
-} from '@mui/material';
-import EditBookCopyModal from '../components/bookCopies/EditBookCopyModal'
+import { Typography, Box, Button } from '@mui/material';
+import EditBookCopyModal from '../components/bookCopies/EditBookCopyModal';
 import BookCopiesTable from '../components/bookCopies/BookCopyTable';
 import ConfirmDeleteDialog from '../components/bookCopies/ConfirmDeleteDialog';
 import AddBookCopyDialog from '../components/bookCopies/AddBookCopyDialog';
@@ -76,7 +74,7 @@ const BookCopies = () => {
             console.log("Book ID is required.");
             return;
         }
-    
+
         try {
             const token = localStorage.getItem('authToken');
             await axios.post(
@@ -95,7 +93,7 @@ const BookCopies = () => {
     const handleEditClick = (book) => {
         setSelectedBook(book);
         setOpen(true);
-    }
+    };
 
     const handleSave = async (updatedBookCopy) => {
         try {
@@ -118,8 +116,12 @@ const BookCopies = () => {
     };
 
     const handleCheckout = (book) => {
-        console.log('handle checkout triggered');   
-    }
+        console.log('handle checkout triggered', book);
+    };
+
+    const handleReturn = (book) => {
+        console.log('handle return triggered', book);
+    };
 
     return (
         <Box sx={{ p: 2 }}>
@@ -128,15 +130,14 @@ const BookCopies = () => {
                 <Button variant="contained" onClick={() => setAddDialogOpen(true)}>Add New Copy</Button>
             </Box>
 
-            {/* Book Table */}
             <BookCopiesTable
                 books={books}
                 onEdit={handleEditClick}
                 onDelete={handleDeleteClick}
                 onCheckout={handleCheckout}
+                onReturn={handleReturn}
             />
 
-            {/* Edit Modal */}
             {selectedBook && (
                 <EditBookCopyModal
                     open={open}
@@ -146,14 +147,12 @@ const BookCopies = () => {
                 />
             )}
 
-            {/* Delete Confirmation Dialog */}
             <ConfirmDeleteDialog
                 confirmDeleteOpen={confirmDeleteOpen}
                 handleDeleteConfirm={handleDeleteConfirm}
                 setConfirmDeleteOpen={setConfirmDeleteOpen}
             />
 
-            {/* Add New Copy Dialog */}
             <AddBookCopyDialog
                 addDialogOpen={addDialogOpen}
                 setAddDialogOpen={setAddDialogOpen}
