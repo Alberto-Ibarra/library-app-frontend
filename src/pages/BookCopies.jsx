@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button, TextField } from '@mui/material';
 import EditBookCopyModal from '../components/bookCopies/EditBookCopyModal';
 import BookCopiesTable from '../components/bookCopies/BookCopyTable';
 import ConfirmDeleteDialog from '../components/bookCopies/ConfirmDeleteDialog';
@@ -14,6 +14,7 @@ const BookCopies = () => {
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [open, setOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
     const [newBookData, setNewBookData] = useState({
         bookid: null,
         location: '',
@@ -123,6 +124,10 @@ const BookCopies = () => {
         console.log('handle return triggered', book);
     };
 
+    const filteredBooks = books.filter(book =>
+        book.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <Box sx={{ p: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -130,8 +135,19 @@ const BookCopies = () => {
                 <Button variant="contained" onClick={() => setAddDialogOpen(true)}>Add New Copy</Button>
             </Box>
 
+            <Box sx={{ mb: 2 }}>
+                <TextField
+                    label="Search by title"
+                    variant="outlined"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    fullWidth
+                    sx={{ maxWidth: 400 }}
+                />
+            </Box>
+
             <BookCopiesTable
-                books={books}
+                books={filteredBooks}
                 onEdit={handleEditClick}
                 onDelete={handleDeleteClick}
                 onCheckout={handleCheckout}
