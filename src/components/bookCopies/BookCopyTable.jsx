@@ -4,7 +4,7 @@ import {
     TableHead, TableRow, Paper, Button, Box
 } from '@mui/material';
 
-const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout, onReturn }) => {
+const BookCopiesTable = ({ books, onEdit, onDelete, handleCheckout, handleReturn }) => {
     return (
         <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2 }}>
             <Table>
@@ -27,13 +27,13 @@ const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout, onReturn }) => {
                             <TableCell>{book.location}</TableCell>
                             <TableCell>{book.bookcondition}</TableCell>
                             <TableCell>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                                     {book.isavailable ? (
                                         <Button
                                             variant="contained"
                                             color="secondary"
                                             size="small"
-                                            onClick={() => onCheckout(book)}
+                                            onClick={() => handleCheckout(book)}
                                         >
                                             CheckOut
                                         </Button>
@@ -42,7 +42,7 @@ const BookCopiesTable = ({ books, onEdit, onDelete, onCheckout, onReturn }) => {
                                             variant="contained"
                                             color="success"
                                             size="small"
-                                            onClick={() => onReturn(book)}
+                                            onClick={() => handleReturn(book)}
                                         >
                                             Return
                                         </Button>
