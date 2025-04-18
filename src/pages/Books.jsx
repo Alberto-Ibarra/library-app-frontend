@@ -85,7 +85,10 @@ const Books = () => {
             const authorNames = newBook.authorNames
                 ? newBook.authorNames.split(',').map(author => author.trim())
                 : [];
-
+            console.log(newBook.title );
+            console.log(newBook.authorNames );
+            console.log(newBook.categoryId );
+            
             if (!newBook.title || !newBook.authorNames || !newBook.categoryId) {
                 return alert('Please fill in all required fields.');
             }
@@ -136,6 +139,7 @@ const Books = () => {
                 authorOptions={authorOptions}
                 loadingAuthors={loadingAuthors}
                 setAuthorInput={setAuthorInput}
+                authorInput={authorInput}
                 categories={categories}
                 handleAddBook={handleAddBook}
             />

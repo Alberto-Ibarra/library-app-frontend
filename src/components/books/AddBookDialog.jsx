@@ -4,7 +4,7 @@ import {
     DialogActions, Button, TextField, Select, MenuItem, InputLabel, FormControl
 } from '@mui/material';
 
-const AddBookDialog = ({openAddBook, setOpenAddBook, setNewBook, authorOptions, loadingAuthors, setAuthorInput, newBook, categories, handleAddBook}) => {
+const AddBookDialog = ({openAddBook, setOpenAddBook, setNewBook, authorOptions, loadingAuthors, authorInput, setAuthorInput, newBook, categories, handleAddBook}) => {
     return (
         <Dialog open={openAddBook} onClose={() => setOpenAddBook(false)} fullWidth maxWidth="sm">
             <DialogTitle>Add New Book</DialogTitle>
@@ -22,13 +22,24 @@ const AddBookDialog = ({openAddBook, setOpenAddBook, setNewBook, authorOptions, 
                     options={authorOptions}
                     getOptionLabel={(option) => typeof option === 'string' ? option : option.name}
                     loading={loadingAuthors}
-                    onInputChange={(event, newInputValue) => setAuthorInput(newInputValue)}
+                    onInputChange={(event, newInputValue) => {
+                        setAuthorInput(newInputValue);
+                        setNewBook((prev) => ({ ...prev, authorNames: newInputValue }));
+                    }}
                     onChange={(event, newValue) => {
-                        const authorName = typeof newValue === 'string' ? newValue : newValue?.name || '';
+                        let authorName = '';
+
+                        if (typeof newValue === 'string') {
+                            authorName = newValue;
+                        } else if (newValue?.name) {
+                            authorName = newValue.name;
+                        }
+
                         setNewBook((prev) => ({
                             ...prev,
                             authorNames: authorName
                         }));
+                        setAuthorInput(authorName);
                     }}
                     renderInput={(params) => (
                         <TextField

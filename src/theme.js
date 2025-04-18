@@ -3,18 +3,24 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
     palette: {
         primary: {
-        main: '#2E4E3F', // Sidebar color
+            main: '#2E4E3F',
         },
         secondary: {
-        main: '#D88C3A', // Accent color
+            main: '#D88C3A',
         },
         background: {
-        default: '#F5F5DC', // Background color
-        paper: '#E6EAE4', // Table background
+            default: '#F5F5DC',
+            paper: '#E6EAE4',
         },
         text: {
-        primary: '#2E4E3F', // Dark Green for readability
-        secondary: '#C9A227', // Golden Yellow for highlights
+            primary: '#2E4E3F',
+            secondary: '#C9A227',
+        },
+    },
+    typography: {
+        h4: {
+            fontStyle: 'italic',
+            fontWeight: 'bold',
         },
     },
 });

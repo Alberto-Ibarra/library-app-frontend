@@ -77,7 +77,7 @@ const CheckoutModal = ({ open, handleClose, handleCheckout }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleSubmit} disabled={loading}>
+                <Button onClick={handleSubmit} disabled={loading} variant="contained" color="primary">
                     {loading ? 'Checking out...' : 'Checkout'}
                 </Button>
                 <Button onClick={handleClose}>Cancel</Button>

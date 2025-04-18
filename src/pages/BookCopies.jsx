@@ -8,6 +8,7 @@ import BookCopiesTable from '../components/bookCopies/BookCopyTable';
 import ConfirmDeleteDialog from '../components/bookCopies/ConfirmDeleteDialog';
 import AddBookCopyDialog from '../components/bookCopies/AddBookCopyDialog';
 import CheckoutModal from '../components/bookCopies/CheckoutModal';
+import ConfirmBookReturn from '../components/bookCopies/ConfirmBookReturn';
 
 const BookCopies = () => {
     const [books, setBooks] = useState([]);
@@ -19,7 +20,9 @@ const BookCopies = () => {
     const [open, setOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
-    const [filterStatus, setFilterStatus] = useState('all'); // NEW
+    const [filterStatus, setFilterStatus] = useState('all');
+    const [confirmReturnOpen, setConfirmReturnOpen] = useState(false);
+    const [patronInfo, setPatronInfo] = useState(null);
     const [newBookData, setNewBookData] = useState({
         bookid: null,
         location: '',
@@ -150,23 +153,40 @@ const BookCopies = () => {
     };
 
     const handleReturn = async (book) => {
-        console.log(book);
-        console.log(book.id);
-        
+        setSelectedBook(book);
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await axios.get(
+                `https://library-app-production-8775.up.railway.app/api/checkout/patroninfo/${book.id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setPatronInfo(response.data);
+            setConfirmReturnOpen(true);
+        } catch (error) {
+            console.error('Error fetching patron info:', error);
+        }
+    };
+    
+
+    const handleConfirmReturn = async () => {
         try {
             const token = localStorage.getItem('authToken');
             const response = await axios.put(
-                `https://library-app-production-8775.up.railway.app/api/checkout/return/${book.id}`,
+                `https://library-app-production-8775.up.railway.app/api/checkout/return/${selectedBook.id}`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            
+    
             console.log('Return successful:', response.data);
-            fetchBookCopies(); 
+            setConfirmReturnOpen(false);
+            setSelectedBook(null);
+            setPatronInfo(null);
+            fetchBookCopies();
         } catch (error) {
             console.error('Error returning book:', error);
         }
     };
+    
 
     const filteredBooks = books.filter(book => {
         const matchesSearch = book.title?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -182,7 +202,7 @@ const BookCopies = () => {
     return (
         <Box sx={{ p: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4">Book Copies Page</Typography>
+                <Typography variant="h4">Book Copies</Typography>
                 <Button variant="contained" onClick={() => setAddDialogOpen(true)}>Add New Copy</Button>
             </Box>
 
@@ -245,6 +265,15 @@ const BookCopies = () => {
                 handleClose={() => setCheckoutModalOpen(false)}
                 handleCheckout={handleConfirmCheckout}
             />
+
+            <ConfirmBookReturn
+                open={confirmReturnOpen}
+                handleClose={() => setConfirmReturnOpen(false)}
+                handleConfirm={handleConfirmReturn}
+                patronInfo={patronInfo}
+                book={selectedBook}
+            />
+
         </Box>
     );
 };

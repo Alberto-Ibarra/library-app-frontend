@@ -31,15 +31,19 @@ const AddBookCopyDialog = ({addDialogOpen, setAddDialogOpen, availableBooks, loa
                         margin="dense"
                         fullWidth
                         required
-                        InputProps={{
-                            ...params.InputProps,
-                            endAdornment: (
-                                <>
+                        slotProps={{
+                            textField: {
+                                InputProps: {
+                                ...params.InputProps,
+                                endAdornment: (
+                                    <>
                                     {loadingBooks ? <CircularProgress color="inherit" size={20} /> : null}
                                     {params.InputProps.endAdornment}
-                                </>
-                            ),
-                        }}
+                                    </>
+                                )
+                                }
+                            }
+                            }}
                     />
                 )}
             />
