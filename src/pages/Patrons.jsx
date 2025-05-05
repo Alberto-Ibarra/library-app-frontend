@@ -82,8 +82,8 @@ const Patrons = () => {
                 <DialogContent>
                     <AddPatronForm
                         onSuccess={() => {
-                            fetchPatrons();  // Refresh list
-                            handleCloseAdd(); // Close dialog
+                            fetchPatrons();
+                            handleCloseAdd();
                         }}
                     />
                 </DialogContent>

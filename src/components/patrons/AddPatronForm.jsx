@@ -10,6 +10,7 @@ const AddPatronForm = ({ onSuccess }) => {
         status: 'active',
         pin: ''
     });
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         setFormData(prev => ({
@@ -38,8 +39,12 @@ const AddPatronForm = ({ onSuccess }) => {
         });
         alert("Patron added successfully!");
         } catch (error) {
-        console.error("Error adding patron:", error);
-        alert("Failed to add patron.");
+            if (error.response?.status === 409) {
+                setErrorMessage("A patron with this email already exists.");
+            } else {
+                setErrorMessage("Failed to add patron.");
+            }
+            console.error("Error adding patron:", error);
         }
     };
 
@@ -95,8 +100,18 @@ const AddPatronForm = ({ onSuccess }) => {
             onChange={handleChange}
             margin="normal"
             required
-            inputProps={{ maxLength: 6 }}
+            slotProps={{
+                input: { maxLength: 6 }
+            }}
         />
+
+        {/* Error Message */}
+        {errorMessage && (
+            <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                {errorMessage}
+            </Typography>
+        )}
+
         <Button type="submit" variant="contained" sx={{ mt: 2 }}>
             Add Patron
         </Button>
