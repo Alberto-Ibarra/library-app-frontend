@@ -1,10 +1,10 @@
 import React from 'react';
 import {
     Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button, Box
+    TableHead, TableRow, Paper, Button, Box, Chip
 } from '@mui/material';
 
-const BookCopiesTable = ({ books, onEdit, onDelete, handleCheckout, handleReturn }) => {
+const BookCopiesTable = ({ books, onEdit, onDelete, handleCheckout, handleReturn, onViewDetails }) => {
     return (
         <TableContainer component={Paper} sx={{ width: '100%', mx: 'auto', p: 2 }}>
             <Table>
@@ -15,18 +15,45 @@ const BookCopiesTable = ({ books, onEdit, onDelete, handleCheckout, handleReturn
                         <TableCell sx={{ color: '#F5F5F5' }}><strong>Available</strong></TableCell>
                         <TableCell sx={{ color: '#F5F5F5' }}><strong>Location</strong></TableCell>
                         <TableCell sx={{ color: '#F5F5F5' }}><strong>Condition</strong></TableCell>
-                        <TableCell sx={{ color: '#F5F5F5' }}><strong>Action</strong></TableCell>
+                        {/* <TableCell sx={{ color: '#F5F5F5' }}><strong>Action</strong></TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {books.map((book, index) => (
                         <TableRow key={book.id} sx={{ backgroundColor: index % 2 === 0 ? '#E6EAE4' : '#F8F6F2' }}>
                             <TableCell>{book.id}</TableCell>
-                            <TableCell>{book.title}</TableCell>
-                            <TableCell>{book.isavailable ? 'Yes' : 'No'}</TableCell>
+
+                            <TableCell>
+                                <Button
+                                    onClick={() => onViewDetails(book)}
+                                    sx={{
+                                    textTransform: 'none',
+                                    padding: 0,
+                                    minWidth: 'auto',
+                                    color: 'primary.main',
+                                    textDecoration: 'underline',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        textDecoration: 'underline',
+                                        cursor: 'pointer',
+                                    },
+                                    }}
+                                >
+                                    {book.title}
+                                </Button>
+                            </TableCell>
+
+                            <TableCell>
+                                <Chip
+                                    label={book.isavailable ? 'Yes' : 'No'}
+                                    color={book.isavailable ? 'success' : 'error'}
+                                    variant="outlined"
+                                    size="small"
+                                />
+                            </TableCell>
                             <TableCell>{book.location}</TableCell>
                             <TableCell>{book.bookcondition}</TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                                     {book.isavailable ? (
                                         <Button
@@ -54,7 +81,7 @@ const BookCopiesTable = ({ books, onEdit, onDelete, handleCheckout, handleReturn
                                         Delete
                                     </Button>
                                 </Box>
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

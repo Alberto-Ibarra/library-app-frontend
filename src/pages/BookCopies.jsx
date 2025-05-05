@@ -9,6 +9,7 @@ import ConfirmDeleteDialog from '../components/bookCopies/ConfirmDeleteDialog';
 import AddBookCopyDialog from '../components/bookCopies/AddBookCopyDialog';
 import CheckoutModal from '../components/bookCopies/CheckoutModal';
 import ConfirmBookReturn from '../components/bookCopies/ConfirmBookReturn';
+import BookDetailsDialog from '../components/bookCopies/BookDetailsDialog';
 
 const BookCopies = () => {
     const [books, setBooks] = useState([]);
@@ -29,6 +30,9 @@ const BookCopies = () => {
         bookcondition: '',
         isavailable: true
     });
+    const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+    const [detailedBook, setDetailedBook] = useState(null);
+
 
     useEffect(() => {
         fetchBookCopies();
@@ -187,6 +191,10 @@ const BookCopies = () => {
         }
     };
     
+    const onViewDetails = (book) => {
+        setDetailedBook(book.id);
+        setDetailsDialogOpen(true);
+    };
 
     const filteredBooks = books.filter(book => {
         const matchesSearch = book.title?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -233,6 +241,7 @@ const BookCopies = () => {
                 onDelete={handleDeleteClick}
                 handleCheckout={handleCheckout}
                 handleReturn={handleReturn}
+                onViewDetails={onViewDetails}
             />
 
             {selectedBook && (
@@ -272,6 +281,16 @@ const BookCopies = () => {
                 handleConfirm={handleConfirmReturn}
                 patronInfo={patronInfo}
                 book={selectedBook}
+            />
+
+            <BookDetailsDialog
+                open={detailsDialogOpen}
+                handleClose={() => setDetailsDialogOpen(false)}
+                bookId={detailedBook}
+                onEdit={handleEditClick}
+                onDelete={handleDeleteClick}
+                onCheckout={handleCheckout}
+                onReturn={handleReturn}
             />
 
         </Box>
