@@ -25,5 +25,4 @@ npm run dev
 ## 🖼️ Screenshots
 
 ![Login](./screenshots/tinified/login.png)
-![Landing / Book Copies](./screenshots/tinified/landing.png)
 
