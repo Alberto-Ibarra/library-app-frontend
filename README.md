@@ -24,10 +24,10 @@ npm run dev
 
 ## 🖼️ Screenshots
 
-![Login](./screenshots/login.png)
-![Landing / Book Copies](./screenshots/landing.png)
-![Book Copy Details](./screenshots/bookdetail.png)
-![Books](./screenshots/bookview.png)
-![Patrons](./screenshots/patronview.png)
-![Patron Checkout Books](./screenshots/patroncheckedoutbooks.png)
-![Users](./screenshots/userview.png)
+![Login](./screenshots/tinified/login.png)
+![Landing / Book Copies](./screenshots/tinified/landing.png)
+![Book Copy Details](./screenshots/tinified/bookdetail.png)
+![Books](./screenshots/tinified/bookview.png)
+![Patrons](./screenshots/tinified/patronview.png)
+![Patron Checkout Books](./screenshots/tinified/patroncheckedoutbooks.png)
+![Users](./screenshots/tinified/userview.png)
