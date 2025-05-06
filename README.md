@@ -26,8 +26,4 @@ npm run dev
 
 ![Login](./screenshots/tinified/login.png)
 ![Landing / Book Copies](./screenshots/tinified/landing.png)
-![Book Copy Details](./screenshots/tinified/bookdetail.png)
-![Books](./screenshots/tinified/bookview.png)
-![Patrons](./screenshots/tinified/patronview.png)
-![Patron Checkout Books](./screenshots/tinified/patroncheckedoutbooks.png)
-![Users](./screenshots/tinified/userview.png)
+
