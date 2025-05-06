@@ -15,7 +15,7 @@ const ConfirmBookReturn = ({ open, handleClose, handleConfirm, patronInfo, book 
                 {patronInfo && (
                     <DialogContentText sx={{ mt: 2 }}>
                         <strong>Book copy id:</strong> {patronInfo.bookcopyid} <br />
-                        <strong>Book:</strong> {book?.title} <br />
+                        <strong>Book:</strong> {book?.book_title} <br />
                         <strong>Checked out by:</strong> {`${patronInfo.firstname} ${patronInfo.lastname}`} <br />
                         <strong>Email:</strong> {patronInfo.email} <br />
                         <strong>Checked out on:</strong> {patronInfo.checkouttime}
