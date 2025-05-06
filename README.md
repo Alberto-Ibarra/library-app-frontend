@@ -39,6 +39,15 @@ cd library-app-frontend
 npm install
 npm run dev
 ```
+## 🔑 Login Credentials
+
+- **Admin Login**  
+  - Email: `test2@library.com`  
+  - Password: `test123`
+
+- **User Login**  
+  - Email: `test1@library.com`  
+  - Password: `test123`
 
 ## 🖼️ Screenshots
 
