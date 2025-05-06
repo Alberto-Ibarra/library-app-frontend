@@ -21,15 +21,29 @@ const RegisterUser = () => {
         e.preventDefault();
         setError('');
         setSuccess('');
-
+    
         try {
-            const response = await axios.post('https://library-app-production-8775.up.railway.app/api/auth/register', formData);
+            const token = localStorage.getItem('authToken');
+    
+            const response = await axios.post(
+                'https://library-app-production-8775.up.railway.app/api/auth/register',
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+    
             setSuccess('User registered successfully');
             setFormData({ firstname: '', lastname: '', email: '', password: '', role: 'user' });
         } catch (err) {
-            setError('Failed to register user');
+            console.error(err.response?.data || err.message);
+            setError(err.response?.data?.message || 'Failed to register user');
         }
     };
+    
 
     return (
         <Box sx={{
