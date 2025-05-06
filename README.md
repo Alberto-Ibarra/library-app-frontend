@@ -25,10 +25,24 @@ npm run dev
 
 ## 🖼️ Screenshots
 
+### 🔐 Login Page
 ![Login](screenshots/tinified/login.png)
+
+### 📚 Book Copy List (Landing)
 ![Landing / Book Copies](screenshots/tinified/landing.png)
+
+### 🔍 Book Copy Details Dialog
 ![Book Copy Details](screenshots/tinified/bookdetail.png)
+
+### 📘 Books View
 ![Books](screenshots/tinified/bookview.png)
+
+### 🙋 Patron Management
 ![Patrons](screenshots/tinified/patronview.png)
+
+### 🧾 Patron's Checked Out Books
 ![Patron Checkout Books](screenshots/tinified/patroncheckedoutbooks.png)
+
+### 👥 User Management
 ![Users](screenshots/tinified/userview.png)
+
