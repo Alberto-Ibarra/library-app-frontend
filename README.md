@@ -12,7 +12,7 @@ This is the frontend of the Library Management System. Built with React, Materia
 
 ## 🚀 Live Application
 
-- [Frontend on Vercel](https://your-vercel-link.vercel.app)
+- [Frontend on Vercel](https://library-app-frontend-mu.vercel.app)
 
 ## ⚙️ Setup Instructions
 
