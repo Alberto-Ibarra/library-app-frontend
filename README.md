@@ -24,5 +24,3 @@ npm run dev
 
 ## 🖼️ Screenshots
 
-![Login](./screenshots/tinified/login.png)
-
