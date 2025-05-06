@@ -11,9 +11,9 @@ This is the frontend for the Library Management System, designed to simplify lib
   - View and manage existing users
   - Delete users as needed
 
-- 📚 **Book Management (CRUD)**: Add, view, edit, and delete book copies. Includes full Create, Read, Update, and Delete functionality.
+- 📚 **Book Management (CRUD)**: Includes full Create, Read, Update, and Delete functionality.
 
-- 🔎 **Search & Filter**: Quickly search and filter book copies by title, author, or category.
+- 🔎 **Search & Filter**: Quickly search and filter book copies by title or avaliability
 
 - 📥 **Checkout & Return**: Seamlessly checkout and return books to/from patrons.
 
